@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+{% load compressed %}
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"0>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% compressed_js 'jquery' %}
+    {% compressed_css 'bootstrap' %}
+</head>
+<body>
+    {% compressed_js 'bootstrap' %}
+    {% compressed_js 'backbone' %}
+    <div id="container" class="container-fluid" style="height: 1000px;">
+        <div class="row">
+            <div id='left' class="span3">
+            </div>
+            <div id='center' class="span6">
+            </div>
+            <div id='right' class="span3">
+            </div>
+        </div>
+    </div>
+    <script type='text/javascript'>
+    $(document).ready(function() {
+        var FuzzitusRouter = Backbone.Router.extend({
+            routes: {
+                "whoami":   "whoami",    // Find out whether the current
+                                         // user is logged in or not
+                "login": "login"         // Login / Signup Page
+            }
+        });
+
+        var router = new FuzzitusRouter();
+        router.on("route:whoami", function() {
+            $.get('/api/v1/whoami/', {},
+                function(data, textStatus, jqXHR) {
+                    if (data.length > 0) {
+                        // Trigger the logged-in route
+                    } else {
+                        // Trigger the login / signup route
+                        router.navigate("login",
+                            {trigger: true, replace: true})
+                    }
+                }, 'json');
+        });
+        router.on("route:login", function() {
+            $.get('/api/v1/form/user_creation_form/', {},
+                function(data, textStatus, jqXHR) {
+                    $('form').remove();
+                    var form = $('<form>')
+                    form.attr('class', 'form-horizontal');
+                    form.attr('style', 'margin-top:200px;display:inline-block;vertical-align: middle;');
+                    form.append(data['form']);
+                    $('div#container #center').append(form);
+                }, 'json')
+        });
+
+        Backbone.history.start();
+        router.navigate('whoami', true);
+    });
+    </script>
+</body>
+</html>
