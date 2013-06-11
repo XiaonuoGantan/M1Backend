@@ -35,5 +35,7 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
-
-settings_dev.py
+fuzzitusbackend/settings_dev.py
+fuzzitusbackend/settings.py
+fuzzitusbackend/settings_basic.py
+fuzzitusbackend/settings_prod.py
