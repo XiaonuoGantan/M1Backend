@@ -19,12 +19,10 @@ v1_api.register(TraitResource())
 v1_api.register(TraitTypeResource())
 v1_api.register(PlayerResource())
 
-from django.views.generic import TemplateView
-
+from fuzzitusbackend.views import FuzzitusTemplateView
 
 urlpatterns = patterns('',
-    # Examples:
-    url(r'^$', TemplateView.as_view(template_name='index.html'), name='index'),
+    url(r'^$', FuzzitusTemplateView.as_view(), name='index'),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 

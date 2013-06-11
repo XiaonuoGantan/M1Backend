@@ -5,7 +5,8 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8"0>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% compressed_js 'jquery' %}
-    {% compressed_css 'bootstrap' %}
+    <link href="{{ STATIC_URL }}/bootstrap/less/bootstrap.css" rel="stylesheet" type="text/css" media="screen,projection" />
+    <link href="{{ STATIC_URL }}/bootstrap/less/responsive.css" rel="stylesheet" type="text/css" media="screen,projection" />
 </head>
 <body>
     {% compressed_js 'bootstrap' %}
@@ -37,7 +38,7 @@
 
         var router = new FuzzitusRouter();
         router.on("route:whoami", function() {
-            $.get('/api/v1/whoami/', {},
+            $.get("{{ server_root_url }}/api/v1/whoami/", {},
                 function(data, textStatus, jqXHR) {
                     if (data.length > 0) {
                         // Trigger the logged-in route
@@ -49,7 +50,7 @@
                 }, 'json');
         });
         router.on("route:login", function() {
-            $.get('/api/v1/form/user_creation_form/', {},
+            $.get("{{ server_root_url }}/api/v1/form/user_creation_form/", {},
                 function(data, textStatus, jqXHR) {
                     $('form').remove();
                     var form = $('<form>')
@@ -60,7 +61,9 @@
                 }, 'json')
         });
 
-        Backbone.history.start();
+        Backbone.history.start({
+            root: "{{ server_root_url }}"
+	});
         router.navigate('whoami', true);
     });
     </script>
