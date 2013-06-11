@@ -112,7 +112,6 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'fuzzitusbackend',
     'tastypie',
-    'tastypie_swagger',
     'pipeline',
     'bootstrapform',
 )
@@ -211,20 +210,3 @@ PIPELINE_JS = {
 
 ### Django Tastypie Settings ###
 TASTYPIE_DEFAULT_FORMATS = ['json']
-DEBUG = True
-TEMPLATE_DEBUG = True
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'fuzzitus_beacon',
-        'USER': 'fuzzitus_admin',
-        'PASSWORD': '60N7u386@S',
-        'HOST': '',
-        'PORT': '',
-    }
-}
-
-AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)
-
-TASTYPIE_SWAGGER_API_MODULE = 'fuzzitusbackend.urls.v1_api'
