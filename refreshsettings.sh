@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 if [ "$1" == "dev" ]; then
     cat fuzzitusbackend/settings_basic.py fuzzitusbackend/settings_dev.py > fuzzitusbackend/settings.py
 elif [ "$1" == "prod" ]; then
