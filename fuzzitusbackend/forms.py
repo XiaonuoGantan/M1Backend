@@ -1,8 +1,9 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.template import Context, Template
 
 FormMapper = {
     'user_creation_form': UserCreationForm,
+    'authentication_form': AuthenticationForm,
 }
 
 def render_form_with_bootstrap(form):
