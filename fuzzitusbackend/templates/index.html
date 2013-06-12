@@ -17,14 +17,12 @@
         </div>
     </div>
     <div id="container" class="container-fluid" style="height: 1000px;">
-        <div class="row">
+        <div class="row-fluid">
             <div id='left' class="span2">
             </div>
-            <div id='center-left' class="span3">
+            <div id='center-left' class="span4">
             </div>
-            <div id='center' class='span2'>
-            </div>
-            <div id='center-right' class='span3'>
+            <div id='center-right' class='span4'>
             </div>
             <div id='right' class="span2">
             </div>
@@ -65,7 +63,7 @@
                     form.append(data['form']);
                     $('div#container #center-left').append(form);
                 }, 'json');
-            $.get('/api/v1/form/authentication_form/', {},
+            $.get('{{ server_root_url }}/api/v1/form/authentication_form/', {},
                 function(data, testStatus, jqXHR) {
                     $('form#login').remove();
                     var form = $('<form>');
