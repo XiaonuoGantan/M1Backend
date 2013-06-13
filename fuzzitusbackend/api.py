@@ -249,7 +249,11 @@ class FormResource(Resource):
     def obj_get(self, request=None, **kwargs):
         form_pk = kwargs['pk']
         form = forms.FormMapper[form_pk]()
-        return {'form': forms.render_form_with_bootstrap(form)}
+        form_action = forms.FormAction[form_pk]
+        return {
+            'form': forms.render_form_with_bootstrap(form),
+            'action': form_action,
+        }
 
     def dehydrate(self, bundle):
         bundle.data['form'] = bundle.obj['form']
