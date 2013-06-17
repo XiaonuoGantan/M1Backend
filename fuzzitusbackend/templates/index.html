@@ -5,7 +5,11 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8"0>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% compressed_js 'jquery' %}
-    <script data-main="{{ STATIC_URL }}js/app" src="{{ STATIC_URL }}requirejs/require.js"></script>
+    {% if DEBUG %}
+        <script data-main="{{ STATIC_URL }}js/dev_app" src="{{ STATIC_URL }}requirejs/require.js"></script>
+    {% else %}
+        <script data-main="{{ STATIC_URL }}js/app" src="{{ STATIC_URL }}requirejs/require.js"></script>
+    {% endif %}
     <link href="{{ STATIC_URL }}/bootstrap/less/bootstrap.css" rel="stylesheet" type="text/css" media="screen,projection" />
     <link href="{{ STATIC_URL }}/bootstrap/less/responsive.css" rel="stylesheet" type="text/css" media="screen,projection" />
 </head>
@@ -29,74 +33,5 @@
             </div>
         </div>
     </div>
-<!--
-    <script type='text/javascript'>
-    $(document).ready(function() {
-        var FuzzitusRouter = Backbone.Router.extend({
-            routes: {
-                "whoami":   "whoami",    // Find out whether the current
-                                         // user is logged in or not
-                "login": "login"         // Login / Signup Page
-            }
-        });
-
-        var router = new FuzzitusRouter();
-        router.on("route:whoami", function() {
-            $.get("{{ server_root_url }}/api/v1/whoami/", {},
-                function(data, textStatus, jqXHR) {
-                    if (data.length > 0) {
-                        // Trigger the logged-in route
-                    } else {
-                        // Trigger the login / signup route
-                        router.navigate("login",
-                            {trigger: true, replace: true})
-                    }
-                }, 'json');
-        });
-        router.on("route:login", function() {
-            $.get("{{ server_root_url }}/api/v1/form/user_creation_form/", {},
-                function(data, textStatus, jqXHR) {
-                    $('form#registration').remove();
-                    var form = $('<form>');
-                    form.attr('action', data['action']);
-                    form.attr('id', 'registration');
-                    form.attr('class', 'form-horizontal');
-                    form.attr('style', 'margin-top:200px;display:inline-block;vertical-align: middle;');
-                    form.append($('<legend>Sign up</legend>'));
-                    form.append(data['form']);
-                    $('div#container #center-left').append(form);
-                }, 'json');
-            $.get('{{ server_root_url }}/api/v1/form/authentication_form/', {},
-                function(data, testStatus, jqXHR) {
-                    $('form#login').remove();
-                    var form = $('<form>');
-                    form.attr('action', data['action']);
-                    form.attr('id', 'login');
-                    form.attr('class', 'form-horizontal');
-                    form.attr('style', 'margin-top:200px;display:inline-block;vertical-align: middle;');
-                    form.append($('<legend>Log in</legend>'));
-                    form.append(data['form']);
-                    $('div#container #center-right').append(form);
-                }, 'json');
-            var SignupView = Backbone.View.extend({
-                el: $('form#registration'),
-                initialize: function() {
-                    _.bindAll(this, 'formSubmit');
-                },
-                events: {
-                    'click .submit': 'formSubmit'
-                },
-                formSubmit: function() {
-                }
-            });
-        });
-
-        Backbone.history.start({
-            root: "{{ server_root_url }}"
-	    });
-        router.navigate('whoami', true);
-    });
-    </script>
--->
 </body>
 </html>

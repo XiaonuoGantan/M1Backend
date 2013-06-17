@@ -41,8 +41,10 @@ class UserResource(ModelResource):
     def signup(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
 
-        data = self.deserialize(request, request.raw_post_data,
+        data = self.deserialize(request, request.body,
             format=request.META.get('CONTENT_TYPE', 'application/json'))
+        data['password'] = data.pop('password1')
+        data.pop('password2')
         user = User.objects.create_user(**data)
         user.is_staff = True
         user.save()
@@ -66,7 +68,8 @@ class UserResource(ModelResource):
                 login(request, user)
                 return self.create_response(request, {
                     'success': True,
-                    'csrf_token': csrf(request)
+                    'csrf_token': csrf(request),
+                    'api_key': user.api_key.key
                 })
             else:
                 return self.create_response(request, {
@@ -80,8 +83,9 @@ class UserResource(ModelResource):
                 }, HttpUnauthorized )
 
     def logout(self, request, **kwargs):
-        self.method_check(request, allowed=['get'])
-        if request.user and request.user.is_authenticated():
+        auth = ApiKeyAuthentication()
+        self.method_check(request, allowed=['post'])
+        if auth.is_authenticated(request):
             logout(request)
             return self.create_response(request, { 'success': True })
         else:
@@ -94,16 +98,11 @@ class WhoAmIResource(ModelResource):
         resource_name = 'whoami'
         excludes = ['email', 'password', 'is_superuser']
         allowed_methods = ['get']
-        authentication = Authentication()
+        authentication = ApiKeyAuthentication()
         authorization = Authorization()
 
-    def get_list(self, request, **kwargs):
-        if request.user.is_authenticated():
-            data = [request.user]
-        else:
-            data = []
-        data = json.dumps(data)
-        return HttpResponse(data, mimetype='application/json', status=200)
+    def get_object_list(self, request):
+        return User.objects.filter(pk=request.user.pk)
 
     def get_detail(self, request, **kwargs):
         raise exc.Unauthorized('Unauthorized access')
