@@ -1,3 +1,0 @@
-[submodule "fuzzitusbackend/static/bootstrap"]
-	path = fuzzitusbackend/static/bootstrap
-	url = git://github.com/twitter/bootstrap.git

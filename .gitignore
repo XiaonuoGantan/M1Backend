@@ -39,3 +39,4 @@ fuzzitusbackend/settings_dev.py
 fuzzitusbackend/settings.py
 fuzzitusbackend/settings_basic.py
 fuzzitusbackend/settings_prod.py
+fuzzitusbackend/static/bootstrap
