@@ -9,6 +9,7 @@ from tastypie import exceptions as exc
 from tastypie.authentication import Authentication, ApiKeyAuthentication
 from tastypie.authorization import Authorization, DjangoAuthorization
 from tastypie.bundle import Bundle
+from tastypie.constants import ALL, ALL_WITH_RELATIONS
 from tastypie.http import HttpUnauthorized, HttpForbidden
 from tastypie.resources import ModelResource, Resource
 from tastypie.utils import trailing_slash
@@ -24,6 +25,9 @@ class UserResource(ModelResource):
         fields = ['first_name', 'last_name', 'username', 'email']
         allowed_methods = ['get', 'post']
         resource_name = 'user'
+        filtering = {
+            'username': ALL,
+        }
 
     def prepend_urls(self):
         return [
@@ -119,8 +123,22 @@ class GameResource(ModelResource):
     class Meta:
         queryset = m.Game.objects.all()
         resource_name = 'game'
-        authentication = ApiKeyAuthentication()
-        authorization = GameOwnerAuthorization()
+        #authentication = ApiKeyAuthentication()
+        #authorization = GameOwnerAuthorization()
+        filtering = {
+            "owner": ALL_WITH_RELATIONS,
+        }
+
+    def obj_create(self, bundle, **kwargs):
+        data = bundle.data
+        data.update({
+            'owner': bundle.request.user
+        })
+        password = data.pop('password', None)
+        game, created = m.Game.objects.get_or_create(**data)
+        game.set_password(password)
+        game.save()
+        return game
 
 
 class BeaconResource(ModelResource):
@@ -257,6 +275,4 @@ class FormResource(Resource):
     def dehydrate(self, bundle):
         bundle.data['form'] = bundle.obj['form']
         return bundle
-
-
 
