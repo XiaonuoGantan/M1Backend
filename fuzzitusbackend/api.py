@@ -123,8 +123,8 @@ class GameResource(ModelResource):
     class Meta:
         queryset = m.Game.objects.all()
         resource_name = 'game'
-        #authentication = ApiKeyAuthentication()
-        #authorization = GameOwnerAuthorization()
+        authentication = ApiKeyAuthentication()
+        authorization = GameOwnerAuthorization()
         filtering = {
             "owner": ALL_WITH_RELATIONS,
         }
@@ -143,6 +143,16 @@ class GameResource(ModelResource):
 
 class BeaconResource(ModelResource):
     game = fields.ForeignKey(GameResource, 'game')
+
+    class Meta:
+        queryset = m.Beacon.objects.all()
+        resource_name = 'beacon'
+        authentication = ApiKeyAuthentication()
+        authorization = GameOwnerAuthorization()
+        filtering = {
+            'game': ALL_WITH_RELATIONS
+        }
+
 
     @property
     def api_version(self):
@@ -198,12 +208,6 @@ class BeaconResource(ModelResource):
         return self.create_response(request, {
             'instructions': instructions,
         })
-
-    class Meta:
-        queryset = m.Beacon.objects.all()
-        resource_name = 'beacon'
-        authentication = ApiKeyAuthentication()
-        authorization = GameOwnerAuthorization()
 
 
 class TraitTypeResource(ModelResource):
