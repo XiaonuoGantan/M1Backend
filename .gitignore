@@ -37,3 +37,6 @@ nosetests.xml
 .pydevproject
 
 settings_dev.py
+fuzzitusbackend/static/
+*.travis.yml
+fuzzitusbackend/static/bootstrap/
