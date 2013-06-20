@@ -41,3 +41,8 @@ fuzzitusbackend/settings_basic.py
 fuzzitusbackend/settings_prod.py
 fuzzitusbackend/static/bootstrap
 fuzzitusbackend/static/
+
+settings_dev.py
+fuzzitusbackend/static/
+*.travis.yml
+fuzzitusbackend/static/bootstrap/
